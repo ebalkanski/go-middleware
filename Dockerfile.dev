@@ -1,10 +1,10 @@
-FROM golang:1.15.5
+FROM golang:1.16.2
 
 RUN go get github.com/canthefason/go-watcher
-RUN go install github.com/canthefason/go-watcher/cmd/watcher
+RUN go install github.com/canthefason/go-watcher/cmd/watcher@latest
 
 ADD . /go/src/github.com/ebalkanski/go-middleware/
-RUN go install github.com/ebalkanski/go-middleware/cmd/...
+RUN cd /go/src/github.com/ebalkanski/go-middleware/ && go install github.com/ebalkanski/go-middleware/cmd/...
 
 WORKDIR /go/src/github.com/ebalkanski/go-middleware/
 EXPOSE 8080
