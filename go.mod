@@ -1,4 +1,4 @@
-module middleware
+module github.com/ebalkanski/go-middleware
 
 go 1.15
 

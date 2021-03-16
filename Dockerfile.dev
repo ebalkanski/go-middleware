@@ -1,0 +1,12 @@
+FROM golang:1.15.5
+
+RUN go get github.com/canthefason/go-watcher
+RUN go install github.com/canthefason/go-watcher/cmd/watcher
+
+ADD . /go/src/github.com/ebalkanski/go-middleware/
+RUN go install github.com/ebalkanski/go-middleware/cmd/...
+
+WORKDIR /go/src/github.com/ebalkanski/go-middleware/
+EXPOSE 8080
+
+ENTRYPOINT ["sh", "-c", "/go/bin/watcher -run github.com/ebalkanski/go-middleware/cmd -watch github.com/ebalkanski/go-middleware"]

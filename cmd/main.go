@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
-	"middleware/internal/service"
 	"net/http"
+
+	"github.com/gorilla/mux"
+
+	"github.com/ebalkanski/go-middleware/internal/service"
 )
 
 func main() {
