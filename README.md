@@ -35,6 +35,8 @@ docker run -p 8080:8080 -v $GOPATH/src/github.com/ebalkanski/go-middleware/:/go/
 The command will start one Docker container - the `middleware` service container listening 
 for requests on port 8080 and accessible via browser on `http://localhost:8080`.
 
+There is a code watcher running in the container, so if you change something in the code, the service will be restarted automatically and you will be able to see the changes immediately in the browser.
+
 You can see the logs of the running container by executing:
 ```bash
 docker logs -f middleware
