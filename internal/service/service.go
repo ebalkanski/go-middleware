@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -18,6 +19,8 @@ type Response struct {
 
 func (s *Service) Hello(w http.ResponseWriter, r *http.Request) {
 	var err error
+
+	log.Println("Service.Hello() is called")
 
 	msg := &Response{
 		Message: "Hello",
