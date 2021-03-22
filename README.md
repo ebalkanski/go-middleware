@@ -42,4 +42,7 @@ You can see the logs of the running container by executing:
 docker logs -f middleware
 ```
 
-Test it by opening [http://localhost:8080](http://localhost:8080) in a browser.
+Test it by opening [http://localhost:8080](http://localhost:8080) in a browser or use Curl from command line:
+```bash
+curl -i -H "Content-Type:application/json" localhost:8080
+```
