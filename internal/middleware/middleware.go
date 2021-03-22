@@ -1,12 +1,15 @@
 package middleware
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 
 	"github.com/ebalkanski/go-middleware/internal/api"
 )
+
+type Cache interface {
+	Message() string
+}
 
 func ResponseHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -23,23 +26,13 @@ func RequestHeaders(next http.Handler) http.Handler {
 
 		contentType := r.Header.Get("Content-Type")
 		if contentType == "" {
-			w.WriteHeader(http.StatusBadRequest)
-			msg := &api.Response{
-				Error: "Content-Type header is missing",
-			}
-			if err := json.NewEncoder(w).Encode(msg); err != nil {
-				log.Println("Cannot write response")
-			}
+			msg := api.NewErrorResponse("Content-Type header is missing")
+			api.WriteResponse(w, msg, http.StatusBadRequest)
 			return
 		}
 		if contentType != "application/json" {
-			w.WriteHeader(http.StatusBadRequest)
-			msg := &api.Response{
-				Error: "Content-Type header must be application/json",
-			}
-			if err := json.NewEncoder(w).Encode(msg); err != nil {
-				log.Println("Cannot write response")
-			}
+			msg := api.NewErrorResponse("Content-Type header must be application/json")
+			api.WriteResponse(w, msg, http.StatusBadRequest)
 			return
 		}
 
@@ -51,6 +44,22 @@ func Logging(logger *log.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			logger.Println("Executing middleware Logging")
+
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
+func Caching(logger *log.Logger, cache Cache) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			logger.Println("Executing middleware Caching")
+
+			msg := cache.Message()
+			if msg != "" {
+				api.WriteResponse(w, api.NewSuccessResponse(msg), http.StatusOK)
+				return
+			}
 
 			next.ServeHTTP(w, r)
 		})

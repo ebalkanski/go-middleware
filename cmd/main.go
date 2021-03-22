@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/ebalkanski/go-middleware/internal/cache"
+
 	"github.com/gorilla/mux"
 	"github.com/justinas/alice"
 
@@ -15,12 +17,19 @@ import (
 func main() {
 	logger := log.Default()
 	svc := service.New()
-	chain := alice.New(middleware.ResponseHeaders, middleware.RequestHeaders, middleware.Logging(logger)).ThenFunc(svc.Hello)
+	simpleCache := cache.New()
+	chain := alice.New(
+		middleware.ResponseHeaders,
+		middleware.RequestHeaders,
+		middleware.Logging(logger),
+		middleware.Caching(logger, simpleCache),
+	)
+
 	r := mux.NewRouter()
 	r.
 		Methods("GET").
 		Path("/").
-		Handler(chain)
+		Handler(chain.ThenFunc(svc.Hello))
 
 	// configure http server
 	srv := &http.Server{
