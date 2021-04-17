@@ -5,13 +5,13 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/ebalkanski/go-middleware/internal/cache"
+	"github.com/ebalkanski/middleware/internal/cache"
 
 	"github.com/gorilla/mux"
 	"github.com/justinas/alice"
 
-	"github.com/ebalkanski/go-middleware/internal/middleware"
-	"github.com/ebalkanski/go-middleware/internal/service"
+	"github.com/ebalkanski/middleware/internal/middleware"
+	"github.com/ebalkanski/middleware/internal/service"
 )
 
 func main() {

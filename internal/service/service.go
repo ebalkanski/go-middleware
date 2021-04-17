@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/ebalkanski/go-middleware/internal/api"
+	"github.com/ebalkanski/middleware/internal/api"
 )
 
 type Service struct{}

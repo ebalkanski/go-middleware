@@ -1,8 +1,8 @@
-module github.com/ebalkanski/go-middleware
+module github.com/ebalkanski/middleware
 
 go 1.16
 
 require (
 	github.com/gorilla/mux v1.8.0
-	github.com/justinas/alice v1.2.0 // indirect
+	github.com/justinas/alice v1.2.0
 )
